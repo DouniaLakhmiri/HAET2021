@@ -19,10 +19,12 @@ Achieve the best accuracy in a classification task with limited training time.
 * Data augmentation and preprocessing
 
 
-## Planning
+## To DO
 
 - [ ] Find a basline network to scale.
 - [ ] Prepare the blackbox.
 - [ ] Choose a data augmentation strategy: fixed/variable per epoch.
+- [ ] Do we need Apex and Dali ? 
+- [ ] Sample subsets of CIFAR-10
 
  
