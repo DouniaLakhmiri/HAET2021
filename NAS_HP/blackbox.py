@@ -181,7 +181,7 @@ for i in range(3):
     total_epochs = 0
     epoch = 0
 
-    while execution_time < 60:
+    while execution_time < 600:
         tr_acc = train(epoch)
         training_accuracies.append(tr_acc)
         te_acc = test(epoch)
