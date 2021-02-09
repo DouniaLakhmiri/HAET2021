@@ -11,7 +11,7 @@ import torchvision
 import torchvision.transforms as transforms
 import os
 import argparse
-from utils import progress_bar
+# from utils import progress_bar
 
 # Added
 import torchvision.models as models
@@ -43,8 +43,9 @@ def train(epoch):
         total += targets.size(0)
         correct += predicted.eq(targets).sum().item()
         acc = 100. * correct / total
-        progress_bar(batch_idx, len(trainloader), 'Loss: %.3f | Acc: %.3f%% (%d/%d)'
-                     % (train_loss / (batch_idx + 1), 100. * correct / total, correct, total))
+        # progress_bar(batch_idx, len(trainloader), 'Loss: %.3f | Acc: %.3f%% (%d/%d)'
+        #              % (train_loss / (batch_idx + 1), 100. * correct / total, correct, total))
+        print(epoch, train_loss, acc)
         state = {
             'net': net.state_dict(),
             'acc': acc,
@@ -71,8 +72,10 @@ def test(epoch):
             total += targets.size(0)
             correct += predicted.eq(targets).sum().item()
             acc = 100. * correct / total
-            progress_bar(batch_idx, len(testloader), 'Loss: %.3f | Acc: %.3f%% (%d/%d)'
-                         % (test_loss / (batch_idx + 1), 100. * correct / total, correct, total))
+            # progress_bar(batch_idx, len(testloader), 'Loss: %.3f | Acc: %.3f%% (%d/%d)'
+            #              % (test_loss / (batch_idx + 1), 100. * correct / total, correct, total))
+            print(epoch, test_loss, acc)
+            print(' ---------------- ')
     return acc
 
 
