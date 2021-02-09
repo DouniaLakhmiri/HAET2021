@@ -50,7 +50,7 @@ def train(epoch):
             'acc': acc,
             'epoch': epoch,
         }
-        torch.save(state, './checkpoint/ckpt.pth')
+        torch.save(state, '../checkpoint/ckpt.pth')
     return acc
 
 
