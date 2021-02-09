@@ -17,3 +17,4 @@ UPPER_BOUND             ( 2.5  2.5  2.5  512 2 1 1 1 1)               # Upper bo
 
 MAX_BB_EVAL             100                             # Number of blackbox evaluations
 DISPLAY_DEGREE          3                               # Display all the logs of NOMAD
+HISTORY_FILE            'history.txt'
