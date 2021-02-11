@@ -22,9 +22,12 @@ def dict_indices(dataset):
 
 
 def get_indx_balanced_train_subset(dict_indices, k):
+    # print(len(dict_indices[0]))
     indx_balanced_subset = []
     for i in range(10):
-        indx_balanced_subset += dict_indices[i][k:k+500]
+        p10_idx = len(dict_indices[i]) // 10
+        print(p10_idx)
+        indx_balanced_subset += dict_indices[i][k:k+p10_idx]
     return indx_balanced_subset
 
 

@@ -1,6 +1,7 @@
 from datahandler2 import *
 from neural_net_motifs import *
 # from thop import clever_format, profile
+from autoaugment import CIFAR10Policy, Cutout
 
 import random
 
@@ -19,6 +20,8 @@ import argparse
 import time
 import sys
 from statistics import mean, stdev
+import matplotlib.pyplot as plt
+# from auto_augment import AutoAugment, Cutout
 
 
 def initialize(model):
@@ -95,6 +98,8 @@ device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 dataset = 'CIFAR10'
 # num_conv_layers = int(sys.argv[2])  # 0
 
+# -1 -1 1 0 2 72 1 0.240000000000000 0 0.010000000000000 0.220000000000000 0.100000000000000
+
 num_full_layers = 5
 list_blocks = num_full_layers * [-1]
 
@@ -139,16 +144,24 @@ except ValueError:
     exit(0)
 
 # optimizer = optim.SGD(model.parameters(), lr=0.03)
-scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=50, eta_min=1e-8)
+scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=100, eta_min=1e-8)
 
 print('==> Preparing data..')
-transform_train = transforms.Compose([
-    transforms.Resize((initial_image_size, initial_image_size)),
-    transforms.RandomCrop(initial_image_size, padding=4),  # resolution
-    transforms.RandomHorizontalFlip(),
-    transforms.ToTensor(),
-    transforms.Normalize((0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010)),
-])
+# transform_train = transforms.Compose([
+#     transforms.Resize((initial_image_size, initial_image_size)),
+#     transforms.RandomCrop(initial_image_size, padding=4),  # resolution
+#     transforms.RandomHorizontalFlip(),
+#     transforms.ToTensor(),
+#     transforms.Normalize((0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010)),
+#     # AutoAugment(),
+# ])
+
+transform_train = transforms.Compose(
+    [transforms.RandomCrop(32, padding=4, fill=128),  # fill parameter needs torchvision installed from source
+     transforms.RandomHorizontalFlip(), CIFAR10Policy(),
+     transforms.ToTensor(),
+     Cutout(n_holes=1, length=16),  # (https://github.com/uoguelph-mlrg/Cutout/blob/master/util/cutout.py)
+     transforms.Normalize((0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010))])
 
 transform_test = transforms.Compose([
     transforms.ToTensor(),
@@ -173,9 +186,9 @@ if device == 'cuda':
     net = torch.nn.DataParallel(model)
     cudnn.benchmark = True
 
-for i in range(3):
+for i in range(1):
 
-    # initialize(model)
+    initialize(model)
 
     # Get 10% of dataset
     train_indices = get_indx_balanced_train_subset(train_idx_dict, i)
@@ -185,11 +198,10 @@ for i in range(3):
 
     # Sampler added to get a subset + this option was removed :
     trainloader = torch.utils.data.DataLoader(
-        trainset, batch_size=batch_size, num_workers=2, sampler=train_sampler)
+        trainset, batch_size=batch_size, num_workers=4, sampler=train_sampler)
 
     testloader = torch.utils.data.DataLoader(
-        testset, batch_size=128, sampler=test_sampler
-    )
+        testset, batch_size=128,  num_workers=4, sampler=test_sampler)
 
     start_epoch = 0
     training_accuracies = []
@@ -200,7 +212,7 @@ for i in range(3):
     epoch = 0
     best_test_acc = 0
 
-    while execution_time < 600:
+    while execution_time < 6:
 
         tr_acc = train(epoch)
         training_accuracies.append(tr_acc)
@@ -210,11 +222,18 @@ for i in range(3):
         execution_time = time.time() - t0
         if te_acc > best_test_acc:
             best_test_acc = te_acc
-        print("Epoch {},  Train accuracy: {:.3f}, Val accuracy: {:.3f}, Best val acc: {:.3f}".format(epoch,
-                                                                                             tr_acc,
-                                                                                             te_acc, best_test_acc))
+        lr = scheduler.get_last_lr()[0]
+        # print(lr)
+        print("Epoch {},  Train accuracy: {:.3f}, Val accuracy: {:.3f}, Best val acc: {:.3f}, lr:{:.3f} ".format(epoch,
+                                                                                                                 tr_acc,
+                                                                                                                 te_acc,
+                                                                                                                 best_test_acc,
+                                                                                                                 lr))
         total_epochs += 1
         epoch += 1
+
+        if (epoch == 10) and best_test_acc < 25:
+            break
 
     print(training_accuracies)
     print(testing_accuracies)
@@ -222,7 +241,9 @@ for i in range(3):
     best_valid_acc.append(max(testing_accuracies))
     best_train_acc.append(max(training_accuracies))
 
-print('Mean best valid acc', mean(best_valid_acc))
-print('Std best valid acc', stdev(best_valid_acc))
-print('Mean best train acc', mean(best_train_acc))
-print('Std best train acc', stdev(best_train_acc))
+# print('Mean best valid acc', mean(best_valid_acc))
+# print('Std best valid acc', stdev(best_valid_acc))
+# print('Mean best train acc', mean(best_train_acc))
+# print('Std best train acc', stdev(best_train_acc))
+
+# plt.plot(len(best_test_acc), best_test_acc)
