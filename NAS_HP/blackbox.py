@@ -45,7 +45,7 @@ def train(epoch):
         acc = 100. * correct / total
         # progress_bar(batch_idx, len(trainloader), 'Loss: %.3f | Acc: %.3f%% (%d/%d)'
         #              % (train_loss / (batch_idx + 1), 100. * correct / total, correct, total))
-        print(epoch, train_loss, acc)
+        # print(epoch, train_loss, acc)
         state = {
             'net': net.state_dict(),
             'acc': acc,
@@ -74,8 +74,8 @@ def test(epoch):
             acc = 100. * correct / total
             # progress_bar(batch_idx, len(testloader), 'Loss: %.3f | Acc: %.3f%% (%d/%d)'
             #              % (test_loss / (batch_idx + 1), 100. * correct / total, correct, total))
-            print(epoch, test_loss, acc)
-            print(' ---------------- ')
+            # print(epoch, test_loss, acc)
+            # print(' ---------------- ')
     return acc
 
 
@@ -193,6 +193,7 @@ for i in range(3):
         execution_time = time.time() - t0
         total_epochs += 1
         epoch += 1
+        print("Epoch {},  Train accuracy: {:.3f}, Val accuracy: {:.3f}".format(epoch, tr_acc, te_acc))
 
     print(training_accuracies)
     print(testing_accuracies)
