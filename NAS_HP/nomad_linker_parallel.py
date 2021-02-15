@@ -40,7 +40,7 @@ def run_single_blackbox(indexOfSubset):
 #    print(syst_cmd)
     
     # Launch the execution
-     os.system(syst_cmd)
+    os.system(syst_cmd)
 
     # Read the output
     fout = open(outputFileName, 'r')
@@ -61,7 +61,7 @@ def run_single_blackbox(indexOfSubset):
 #    valid_acc= 10+indexOfSubset
 #    train_acc= 10+indexOfSubset**2
 
-    return valid_acc,train_acc
+    return val_acc,train_acc
 
 if __name__ == "__main__":
 
@@ -75,7 +75,7 @@ if __name__ == "__main__":
     best_train_acc = []
     best_valid_acc = []
     for element in processed_list:
-        best_valid_acc.append(element[0])
-        best_train_acc.append(element[1])
+        best_valid_acc.append(float(element[0]))
+        best_train_acc.append(float(element[1]))
 
     print(mean(best_valid_acc),stdev(best_valid_acc), mean(best_train_acc), stdev(best_train_acc))

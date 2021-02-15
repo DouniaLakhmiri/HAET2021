@@ -86,7 +86,7 @@ indx = 1
 print('==> Reading Hyperparameters..')
 
 # Index of the cifar10 data subset
-indexDataSubset = sys.argv[indx]
+indexDataSubset = int(sys.argv[indx])
 
 # Architecture : A scaled version of ResNet18 ?
 depth = float(sys.argv[indx+1])
@@ -197,8 +197,8 @@ while execution_time < 600:
     epoch += 1
     print("Epoch {},  Train accuracy: {:.3f}, Val accuracy: {:.3f}".format(epoch, tr_acc, te_acc))
 
-print('Best valid acc',training_accuracies)
-print('Best train acc',testing_accuracies)
+print('Best valid acc',training_accuracies[-1])
+print('Best train acc',testing_accuracies[-1])
 
 # plt.plot(range(total_epochs), training_accuracies, label='Training', color='r')
 # plt.plot(range(total_epochs), testing_accuracies, label='Training', color='b')
