@@ -166,7 +166,7 @@ subset_indices_test_1 = plane_indices_test[0:100] + car_indices_test[0:100] + bi
 
 
 trainset_1 = torch.utils.data.Subset(trainset,subset_indices_1)
-testset_1 = torch.utils.data.Subset(testset,subset_indices_teste_1)
+testset_1 = torch.utils.data.Subset(testset,subset_indices_test_1)
 
 # Subset of CIFAR-10
 
@@ -190,12 +190,20 @@ for i in range(1):
     train_sampler = torch.utils.data.sampler.SubsetRandomSampler(train_indices)
     test_sampler = torch.utils.data.sampler.SubsetRandomSampler(test_indices)
 
+
     # Sampler added to get a subset + this option was removed :
     trainloader = torch.utils.data.DataLoader(
-        trainset, batch_size=batch_size, num_workers=4, sampler=train_sampler)
+        trainset_1, batch_size=batch_size, num_workers=4, sampler=train_sampler)
 
     testloader = torch.utils.data.DataLoader(
-        testset, batch_size=128, num_workers=4, sampler=test_sampler)
+        testset_1, batch_size=128, num_workers=4, sampler=test_sampler)
+
+#    # Sampler added to get a subset + this option was removed :
+#    trainloader = torch.utils.data.DataLoader(
+#        trainset, batch_size=batch_size, num_workers=4, sampler=train_sampler)
+#
+#    testloader = torch.utils.data.DataLoader(
+#        testset, batch_size=128, num_workers=4, sampler=test_sampler)
 
     start_epoch = 0
     training_accuracies = []
