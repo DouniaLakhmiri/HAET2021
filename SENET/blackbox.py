@@ -133,6 +133,33 @@ trainset = torchvision.datasets.CIFAR10(
 testset = torchvision.datasets.CIFAR10(
     root='./data', train=False, download=True, transform=transform_test)
 
+classDict = {'plane': 0, 'car': 1, 'bird': 2, 'cat': 3, 'deer': 4, 'dog': 5, 'frog': 6, 'horse': 7, 'ship': 8,'truck': 9}
+
+y_train = trainset.targets
+y_test = testset.targets
+
+plane_indices = get_class_i_indices(y_train,classDict['plane'])
+car_indices = get_class_i_indices(y_train,classDict['car'])
+bird_indices = get_class_i_indices(y_train,classDict['bird'])
+cat_indices = get_class_i_indices(y_train,classDict['cat'])
+deer_indices = get_class_i_indices(y_train,classDict['deer'])
+dog_indices = get_class_i_indices(y_train,classDict['dog'])
+frog_indices = get_class_i_indices(y_train,classDict['frog'])
+horse_indices = get_class_i_indices(y_train,classDict['horse'])
+ship_indices = get_class_i_indices(y_train,classDict['ship'])
+truck_indices = get_class_i_indices(y_train,classDict['truck'])
+
+plane_indices_test = get_class_i_indices(y_test,classDict['plane'])
+car_indices_test = get_class_i_indices(y_test,classDict['car'])
+bird_indices_test = get_class_i_indices(y_test,classDict['bird'])
+cat_indices_test = get_class_i_indices(y_test,classDict['cat'])
+deer_indices_test = get_class_i_indices(y_test,classDict['deer'])
+dog_indices_test = get_class_i_indices(y_test,classDict['dog'])
+frog_indices_test = get_class_i_indices(y_test,classDict['frog'])
+horse_indices_test = get_class_i_indices(y_test,classDict['horse'])
+ship_indices_test = get_class_i_indices(y_test,classDict['ship'])
+truck_indices_test = get_class_i_indices(y_test,classDict['truck'])
+
 # Subset of CIFAR-10
 
 train_idx_dict = dict_indices(trainset)
