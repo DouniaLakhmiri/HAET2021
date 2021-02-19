@@ -205,11 +205,6 @@ for i in range(1):
         lrs.append(lr)
         # print(lr)
 
-        if epoch % 100 == 0:
-            # Reset lr
-            for param_group in optimizer.param_groups:
-                param_group['lr'] /= 10
-
         print("Epoch {},  Train accuracy: {:.3f}, Val accuracy: {:.3f}, Best val acc: {:.3f}, LR: {:.3f}".format(epoch,
                                                                                                                  tr_acc,
                                                                                                                  te_acc,
