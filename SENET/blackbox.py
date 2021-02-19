@@ -160,6 +160,14 @@ horse_indices_test = get_class_i_indices(y_test,classDict['horse'])
 ship_indices_test = get_class_i_indices(y_test,classDict['ship'])
 truck_indices_test = get_class_i_indices(y_test,classDict['truck'])
 
+subset_indices_1 = plane_indices[0:500] + car_indices[0:500] + bird_indices[0:500] + car_indices[0:500] + deer_indices[0:500] + dog_indices[0:500] + frog_indices[0:500] + horse_indices[0:500] + ship_indices[0:500]+ truck_indices[0:500]
+
+subset_indices_test_1 = plane_indices_test[0:100] + car_indices_test[0:100] + bird_indices_test[0:100] + car_indices_test[0:100] + deer_indices_test[0:100] + dog_indices_test[0:100] + frog_indices_test[0:100] + horse_indices_test[0:100] + ship_indices_test[0:100]+ truck_indices_test[0:100]
+
+
+trainset_1 = torch.utils.data.Subset(trainset,subset_indices_1)
+testset_1 = torch.utils.data.Subset(testset,subset_indices_teste_1)
+
 # Subset of CIFAR-10
 
 train_idx_dict = dict_indices(trainset)
