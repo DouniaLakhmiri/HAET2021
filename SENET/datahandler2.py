@@ -5,6 +5,15 @@ import torch.utils.data
 import random
 
 
+def get_class_i_indices(y,i)
+    y=np.array(y)
+    pos_i=np.argwhere(y==i)
+    pos_i=list(pos_i[:,0])
+    random.shuffle(pos_i)
+    
+    return pos_i
+
+
 def get_indices(dataset, class_name):
     indices = []
     for i in range(len(dataset.targets)):
