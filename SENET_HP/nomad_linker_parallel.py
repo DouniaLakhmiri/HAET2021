@@ -1,11 +1,12 @@
 import os
 import sys
-import multiprocessing
+#import multiprocessing
 from joblib import Parallel, delayed
 from statistics import mean, stdev
 
 # Update the list with available gpu devices!
 gpuIndexList = [2,3,6]
+# gpuIndexList = [2,3]
 
 # The number of cifar10 subsets defined in blackbox_single
 numberOfSeeds = 3
@@ -23,6 +24,8 @@ fin.close()
 
 def run_single_blackbox(indexOfSeed):
 
+    val_acc = 0
+    train_acc = 0
     #
     # Create system command
     #
@@ -38,17 +41,16 @@ def run_single_blackbox(indexOfSeed):
     
     # Need to put the outputs in separate files
     syst_cmd += '> '+outputFileName+' 2>&1'
-    
-#    print(syst_cmd)
+    # print(syst_cmd)
+    os.system(syst_cmd)
 
     # append file into log file
-    append_cmd =  'echo ================================================================= >> ' + logAllFile + ' ; '
-    append_cmd +=  'echo ' + syst_cmd + ' >> ' + logAllFile + ' ; '
+    append_cmd =   'echo ================================================================= >> ' + logAllFile + ' ; '
     append_cmd +=  'cat ' + outputFileName + ' >> ' + logAllFile
-    os.system(syst_cmd)
     
     # Launch the execution
-    os.system(syst_cmd)
+    # print(append_cmd)
+    os.system(append_cmd)
 
     # Read the output
     fout = open(outputFileName, 'r')
@@ -71,13 +73,16 @@ def run_single_blackbox(indexOfSeed):
 
     return val_acc,train_acc
 
+
 if __name__ == "__main__":
 
     if len(gpuIndexList)!=numberOfSeeds:
         print('Number of GPU ',len(gpuIndexList),' smaller than number of subsets',numberOfSeeds)
         exit()
 
-    processed_list = Parallel(n_jobs=numberOfSeeds)(delayed(run_single_blackbox)(i) for i in range(numberOfSeeds))
+    processed_list = Parallel(n_jobs=-1)(delayed(run_single_blackbox)(i) for i in range(numberOfSeeds))
+#    best_valid_acc, best_train_acc = run_single_blackbox(0)
+
 
     # Collect the outputs for validation and training, get mean and std dev for both and output
     best_train_acc = []
@@ -85,5 +90,7 @@ if __name__ == "__main__":
     for element in processed_list:
         best_valid_acc.append(float(element[0]))
         best_train_acc.append(float(element[1]))
+        
+    # print(best_valid_acc,best_train_acc)
 
     print(mean(best_valid_acc),stdev(best_valid_acc), mean(best_train_acc), stdev(best_train_acc))

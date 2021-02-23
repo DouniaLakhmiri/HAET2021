@@ -263,9 +263,9 @@ best_test_acc = 0
 
 lrs = []
 
-print('batch_size: ',batch_size_arg,' weight_decay: ',weight_decay_arg,' lr: ',lr_arg,' optimizer_choice: ',optimizer_choice)
+print('Index seed:',indexDataSeed,'batch_size: ',batch_size_arg,' weight_decay: ',weight_decay_arg,' lr: ',lr_arg,' optimizer_choice: ',optimizer_choice)
 
-while execution_time < 1000:
+while execution_time < 600:
 
     tr_acc = train(epoch)
     training_accuracies.append(tr_acc)
@@ -279,11 +279,7 @@ while execution_time < 1000:
     lrs.append(lr)
     # print(lr)
 
-    print("Epoch {},  Train accuracy: {:.3f}, Val accuracy: {:.3f}, Best val acc: {:.3f}, LR: {:.3f}".format(epoch,
-                                                                                                             tr_acc,
-                                                                                                             te_acc,
-                                                                                                             best_test_acc,
-                                                                                                             lr))
+    print("Epoch {}, Execution time: {:.1f} Train accuracy: {:.3f}, Val accuracy: {:.3f}, Best val acc: {:.3f}, LR: {:.3f}".format(epoch,execution_time,tr_acc,te_acc,best_test_acc,lr))
     total_epochs += 1
     epoch += 1
     
