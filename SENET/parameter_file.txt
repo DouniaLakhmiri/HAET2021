@@ -1,0 +1,20 @@
+DIMENSION               3                               # NOMAD optimizes 12 hyperparameters
+BB_EXE                  "$python ./linker_nomad.py"    # The script that links NOMAD to this blackbox
+
+BB_OUTPUT_TYPE          OBJ                             # The blackbox returns 4 outputs:
+                                                        # OBJ : Mean best validation accuracy
+                                                        #  - : std of best validation accuracy
+                                                        #  - : Mean best training accuracy
+                                                        #  - : std of best training accuracy
+
+BB_INPUT_TYPE           ( R R R  )         # depth_mult width_mult resolution and Real hyperparameters
+                                                        # batch size + Optimizer are Integer
+
+X0                      ( 1 1 1 )    # NOMAD needs an initial starting point
+
+LOWER_BOUND             ( 0.25 0.05 0.125 )                 # Lower bound on d, w and r
+UPPER_BOUND             ( 4 2.5 10 )               # Upper bound on d, w and r
+
+MAX_BB_EVAL             100                             # Number of blackbox evaluations
+DISPLAY_DEGREE          3                               # Display all the logs of NOMAD
+HISTORY_FILE            'history.txt'
