@@ -1,6 +1,6 @@
 # Scaling the SeNET network
 
-## NAS phase:
+## NAS phase
 
 We use d, w, and r to scale the depth, width and resolution of the baseline network SeNET. 
 
