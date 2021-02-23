@@ -5,12 +5,13 @@ import torch.utils.data
 import random
 import numpy as np
 
-def get_class_i_indices(y,i):
-    y=np.array(y)
-    pos_i=np.argwhere(y==i)
-    pos_i=list(pos_i[:,0])
+
+def get_class_i_indices(y, i):
+    y = np.array(y)
+    pos_i = np.argwhere(y == i)
+    pos_i = list(pos_i[:, 0])
     random.shuffle(pos_i)
-    
+
     return pos_i
 
 
@@ -36,13 +37,12 @@ def get_indx_balanced_train_subset(dict_indices, k):
     for i in range(10):
         p10_idx = len(dict_indices[i]) // 10
         # print(p10_idx)
-        indx_balanced_subset += dict_indices[i][k:k+p10_idx]
+        indx_balanced_subset += dict_indices[i][k:k + p10_idx]
     return indx_balanced_subset
 
 
 def get_indx_balanced_test_subset(dict_indices, k):
     indx_balanced_subset = []
     for i in range(10):
-        indx_balanced_subset += dict_indices[i][k:k+100]
+        indx_balanced_subset += dict_indices[i][k:k + 100]
     return indx_balanced_subset
-
