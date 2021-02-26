@@ -1,6 +1,4 @@
 from datahandler2 import *
-# from neural_net_motifs import *
-# from thop import clever_format, profile
 from autoaugment import CIFAR10Policy, Cutout
 
 import random
@@ -104,7 +102,7 @@ number_input_channels = 3
 
 # Architecture
 print('==> Building network architecture.')
-model = scaled_senet(0.78, 0.67, new_image_size)
+model = scaled_senet(1, 0.67, new_image_size)
 # model = scaled_senet(0.83, 0.54, new_image_size)
 model.to(device)
 print(model)
@@ -274,7 +272,7 @@ trainloader = torch.utils.data.DataLoader(
     trainset_1, batch_size=batch_size_arg, num_workers=2, shuffle=True)
 
 testloader = torch.utils.data.DataLoader(
-    testset_1, batch_size=250, shuffle=False)
+    testset_1, batch_size=1280, shuffle=False)
 
 start_epoch = 0
 training_accuracies = []
