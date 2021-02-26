@@ -17,7 +17,7 @@ import torchvision.transforms as transforms
 import time
 import sys
 import matplotlib.pyplot as plt
-from senet_train import *
+from senet_scaled import *
 
 
 def initialize(model):
@@ -90,12 +90,17 @@ dataset = 'CIFAR10'
 
 
 initial_image_size = 32
+new_image_size = int(32 * 1.02)
 total_classes = 10
 number_input_channels = 3
 
 
-model = SENet18()
+# Architecture
+print('==> Building network architecture.')
+model = scaled_senet(0.78, 0.67, new_image_size)
+# model = scaled_senet(0.83, 0.54, new_image_size)
 model.to(device)
+# print(model)
 
 # print(model)
 
@@ -104,15 +109,17 @@ criterion = nn.CrossEntropyLoss()
 print('==> Preparing data..')
 
 transform_train = transforms.Compose(
-    [
-        transforms.RandomCrop(32, padding=4),  # fill parameter needs torchvision installed from source
-        transforms.RandomHorizontalFlip(),
-        CIFAR10Policy(),
-        transforms.ToTensor(),
-        Cutout(n_holes=1, length=16),  # (https://github.com/uoguelph-mlrg/Cutout/blob/master/util/cutout.py)
-        transforms.Normalize((0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010))])
+[
+    transforms.Resize((new_image_size, new_image_size)),
+    transforms.RandomCrop(new_image_size, padding=4),  # fill parameter needs torchvision installed from source
+    transforms.RandomHorizontalFlip(),
+    CIFAR10Policy(),
+    transforms.ToTensor(),
+    Cutout(n_holes=1, length=16),  # (https://github.com/uoguelph-mlrg/Cutout/blob/master/util/cutout.py)
+    transforms.Normalize((0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010))])
 
 transform_test = transforms.Compose([
+    transforms.Resize((new_image_size, new_image_size)),
     transforms.ToTensor(),
     transforms.Normalize((0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010)),
 ])
