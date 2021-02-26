@@ -268,7 +268,8 @@ lrs = []
 
 print('Index seed:',indexDataSeed,'batch_size: ',batch_size_arg,' weight_decay: ',weight_decay_arg,' lr: ',lr_arg,' optimizer_choice: ',optimizer_choice)
 
-while execution_time < 600:
+# while execution_time < 600:
+while execution_time < 1000:
 
     tr_acc = train(epoch)
     training_accuracies.append(tr_acc)
