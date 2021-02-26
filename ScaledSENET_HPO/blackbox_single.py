@@ -49,14 +49,6 @@ def train(epoch):
         total += targets.size(0)
         correct += predicted.eq(targets).sum().item()
         acc = 100. * correct / total
-
-#        state = {
-#            'net': model.state_dict(),
-#            'acc': acc,
-#            'epoch': epoch,
-#        }
-#
-#        torch.save(state, 'ckpt.pth')
     return acc
 
 
@@ -102,12 +94,10 @@ model = scaled_senet(0.78, 0.67, new_image_size)
 model.to(device)
 # print(model)
 
-# print(model)
 
 criterion = nn.CrossEntropyLoss()
 
 print('==> Preparing data..')
-
 transform_train = transforms.Compose(
 [
     transforms.Resize((new_image_size, new_image_size)),
@@ -258,6 +248,9 @@ initialize(model)
 trainloader = torch.utils.data.DataLoader(
     trainset_1, batch_size=batch_size_arg, num_workers=2, shuffle=True)
 
+#
+#  TODO check that batch_size=250 is ok for testloader
+#
 testloader = torch.utils.data.DataLoader(
     testset_1, batch_size=250, shuffle=False)
 
@@ -271,8 +264,6 @@ total_epochs = 0
 epoch = 0
 best_test_acc = 0
 
-
-
 lrs = []
 
 print('Index seed:',indexDataSeed,'batch_size: ',batch_size_arg,' weight_decay: ',weight_decay_arg,' lr: ',lr_arg,' optimizer_choice: ',optimizer_choice)
@@ -285,6 +276,8 @@ while execution_time < 600:
     testing_accuracies.append(te_acc)
     scheduler.step()
     execution_time = time.time() - t0
+    
+    # For challenge submission (not really needed for HPO)
     if te_acc > best_test_acc:
         best_test_acc = te_acc
         print('Saving checkpoint..')
@@ -299,6 +292,12 @@ while execution_time < 600:
     # print(lr)
 
     print("Epoch {}, Execution time: {:.1f} Train accuracy: {:.3f}, Val accuracy: {:.3f}, Best val acc: {:.3f}, LR: {:.3f}".format(epoch,execution_time,tr_acc,te_acc,best_test_acc,lr))
+    
+    # Maybe adjusted
+    if ((int(epoch)>30) and (best_test_acc<=50.0)):
+        print('Stop after 30 epochs because best_test_acc<=50')
+        break
+    
     total_epochs += 1
     epoch += 1
     
