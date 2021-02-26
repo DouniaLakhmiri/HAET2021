@@ -248,11 +248,8 @@ initialize(model)
 trainloader = torch.utils.data.DataLoader(
     trainset_1, batch_size=batch_size_arg, num_workers=2, shuffle=True)
 
-#
-#  TODO check that batch_size=250 is ok for testloader
-#
 testloader = torch.utils.data.DataLoader(
-    testset_1, batch_size=250, shuffle=False)
+    testset_1, batch_size=128, shuffle=False)
 
 
 start_epoch = 0
@@ -268,8 +265,8 @@ lrs = []
 
 print('Index seed:',indexDataSeed,'batch_size: ',batch_size_arg,' weight_decay: ',weight_decay_arg,' lr: ',lr_arg,' optimizer_choice: ',optimizer_choice)
 
-# while execution_time < 600:
-while execution_time < 1000:
+ while execution_time < 600:
+# while execution_time < 1000:
 
     tr_acc = train(epoch)
     training_accuracies.append(tr_acc)

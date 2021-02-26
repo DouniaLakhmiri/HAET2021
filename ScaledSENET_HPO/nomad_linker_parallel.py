@@ -5,7 +5,7 @@ from joblib import Parallel, delayed
 from statistics import mean, stdev
 
 # Update the list with available gpu devices!
-gpuIndexList = [2,3,6]
+gpuIndexList = [2,3,4]
 # gpuIndexList = [2,3]
 
 # The number of cifar10 subsets defined in blackbox_single
