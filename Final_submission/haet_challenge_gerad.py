@@ -95,7 +95,7 @@ transform_test = transforms.Compose([
 
 # Architecture
 print('==> Building network architecture..')
-model = scaled_senet(0.78, 0.67, initial_image_size)
+model = scaled_senet(1, 0.67, initial_image_size)
 model.to(device)
 print(model)
 
