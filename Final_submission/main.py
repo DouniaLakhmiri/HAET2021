@@ -107,7 +107,7 @@ if device == 'cuda':
 print('==> Defining the Optimizer and its hyperparameters..')
 criterion = nn.CrossEntropyLoss()
 optimizer = optim.SGD(model.parameters(), lr=0.042, momentum=0.9, weight_decay=0.005)
-scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=50, eta_min=1e-8)
+scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=240, eta_min=1e-8)
 
 # --------------------------------------------
 # Dataset - Cifar10
